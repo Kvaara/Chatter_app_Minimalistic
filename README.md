@@ -1,4 +1,7 @@
 # Chatter_app_minimalistic
+
+You can use this application live in here: https://kvaara-chatter-app-minmalistic.herokuapp.com/
+
 This is kind of like my other project (chatter_app) but with more styling added and a minimalistic design. 
 This project doesn't use MongoDB and saves all of the users into an array. 
 In addition, there are no private messaging or the ability to read your sent messages and you can only see users that are online in the current room. 
