@@ -12,27 +12,44 @@ const $messages = document.querySelector("#messages");
 // Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
+// Options
 const usernameAndRoom = Qs.parse(location.search, { ignoreQueryPrefix: true });
-const { username } = usernameAndRoom;
-const { room } = usernameAndRoom;
+// const { username } = usernameAndRoom;
+// const { room } = usernameAndRoom;
+
+const autoScroll = () => {};
 
 socket.on("message", (message) => {
   console.log(message);
   const html = Mustache.render(messageTemplate, {
-    message: message.text,
+    username: message.username,
+    message: message.message,
     time: moment(message.time).format("h:mm A"),
   });
   $messages.insertAdjacentHTML("beforeend", html);
+  autoScroll();
 });
 
 socket.on("locationMessage", (locationMessage) => {
   console.log(locationMessage);
   const html = Mustache.render(locationTemplate, {
+    username: locationMessage.username,
     url: locationMessage.url,
     time: moment(locationMessage.time).format("h:mm A"),
   });
   $messages.insertAdjacentHTML("beforeend", html);
+  autoScroll();
+});
+
+socket.on("roomStatus", ({ room, users }) => {
+  const html = Mustache.render(sidebarTemplate, {
+    room,
+    users,
+  });
+
+  document.querySelector("#sidebar").innerHTML = html;
 });
 
 $messageForm.addEventListener("submit", (e) => {
@@ -76,4 +93,9 @@ $sendLocationButton.addEventListener("click", () => {
   });
 });
 
-socket.emit("enter", usernameAndRoom);
+socket.emit("enter", usernameAndRoom, (error) => {
+  if (error) {
+    alert(error);
+    location.href = "/";
+  }
+});

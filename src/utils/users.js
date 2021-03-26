@@ -1,7 +1,4 @@
-const users = [
-  { id: 5, username: "testi2", room: "lol" },
-  { id: 5, username: "testi2", room: "lel" },
-];
+const users = [];
 
 // addUser, removeUser, getUser, getUsersInRoom
 
@@ -39,12 +36,7 @@ const removeUser = (id) => {
   const index = users.findIndex((user) => user.id === id);
 
   // eslint-disable-next-line no-unused-expressions
-  if (index !== -1) users.splice(index, 1)[0];
-  else {
-    return {
-      error: "Username not found!",
-    };
-  }
+  if (index !== -1) return users.splice(index, 1)[0];
 };
 
 const getUser = (id) => users.find((userElement) => userElement.id === id);
